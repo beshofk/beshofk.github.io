@@ -1,0 +1,240 @@
+<ion-header>
+    <ion-toolbar color="primary" class="text-right">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title class="font-size-18">الاشتراكات الرئيسية</ion-title>
+    </ion-toolbar>
+    <ion-tab-bar>
+        <span class="infoTitleNumberDuplicated font-weight-bold col-auto">رقم مكرر</span>
+        <span class="infoTitleDuplicated font-weight-bold col-auto">حجز مكرر</span>
+        <span class="infoTitleNew font-weight-bold col-auto"> حجز جديد</span>
+        <span class="infoTitleConfirm font-weight-bold col-auto">حجز مؤكد</span>
+        <span class="infoTitleDeleted font-weight-bold col-auto">حجز ملغي</span>
+    </ion-tab-bar>
+</ion-header>
+
+
+
+
+<ion-content class="allContainer">
+    <div class="my-1 text-right">
+        <mat-form-field class="col-md-2 col-4">
+            <input matInput class="form-field" [formControl]="nameFilter" placeholder="الاسم">
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <input matInput class="form-field" [formControl]="mobileFilter" placeholder="الموبايل">
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>النوع</mat-label>
+            <mat-select [formControl]="genderFilter">
+                <mat-option *ngFor="let g of gender" [value]="g.value">
+                    {{g.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>السن</mat-label>
+            <mat-select [formControl]="ageFilter">
+                <mat-option *ngFor="let age of rangeAge" [value]="age.value">
+                    {{age.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>نوع الحجز</mat-label>
+            <mat-select [formControl]="statusFilter">
+                <mat-option *ngFor="let s of status" [value]="s.value">
+                    {{s.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>مكرر</mat-label>
+            <mat-select [formControl]="duplicatedFilter">
+                <mat-option *ngFor="let d of duplicated" [value]="d.value">
+                    {{d.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <ion-button class="resetButton col-md-2 col-4" color="primary" type="button" (click)="resetFilters()">
+            إلغاء الفلتر
+        </ion-button>
+    </div>
+
+    <div class="containerTable mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+            <ng-container matColumnDef="mainSubscriber">
+                <mat-header-cell *matHeaderCellDef> المشترك الرئيسي </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <p [ngClass]="element.duplicated ? 'mobile-duplicated': ''">
+                        <span *ngFor="let adult of element.adults">
+                            <span *ngIf="adult.mainSubscriber">{{adult.subscriber}}</span>
+                        </span>
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="adultNumber">
+                <mat-header-cell *matHeaderCellDef class="mobile-hidden"> عدد البالغين </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mobile-hidden"> {{element.adultNumber}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="childNumber">
+                <mat-header-cell *matHeaderCellDef class="mobile-hidden"> عدد الأطفال </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mobile-hidden"> {{element.childNumber}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="reservationType">
+                <mat-header-cell *matHeaderCellDef class="mobile-hidden"> نوع الحجز </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mobile-hidden">
+                    <span *ngIf="element.reservationType === 'single'">فرد</span>
+                    <span *ngIf="element.reservationType === 'group'">مجموعة</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalCoast">
+                <mat-header-cell *matHeaderCellDef> الإجمالي </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.totalCoast}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="paidCoast">
+                <mat-header-cell *matHeaderCellDef> المدفوع </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.paidCoast}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remainigCoast">
+                <mat-header-cell *matHeaderCellDef>الباقي </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.remainigCoast}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="subscriptionNotes">
+                <mat-header-cell *matHeaderCellDef>ملاحظات </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span *ngIf="element.subscriptionNotes"> {{element.subscriptionNotes | slice:0:9}}..</span>
+                    <span *ngIf="!element.subscriptionNotes"> - </span>
+
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button type="button" *ngIf="role === 'ADMIN'" (click)="openTicket(element.id)">
+                        <mat-icon matSuffix matTooltip="تعديل" matTooltipPosition="right">edit
+                        </mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="arrow">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element" (click)="onToggle(element)">
+                    <i class="material-icons">
+                {{element.state === true ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
+              </i>
+                </mat-cell>
+            </ng-container> -->
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'new': row.status=='new','confirmed': row.status=='confirmed','duplicated': row.status=='duplicated','deleted': row.status=='deleted' }" class="element-row" 
+            > 
+            <!-- [cdkDetailRow]="row" [cdkDetailRowTpl]="tpl" -->
+            </mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, dataSource.data.length]"></mat-paginator>
+    </div>
+
+    <ng-template #tpl let-element>
+        <div class="mat-row detail-row" [@detailExpand]="element.state" style="overflow: hidden">
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <p class="text-blue text-center font-size-20"> عدد البالغين: {{element.adultNumber}}</p>
+                        <div class="table-responsive">
+                            <table class="table text-right">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">المشترك</th>
+                                        <th scope="col">الموبايل</th>
+                                        <th scope="col">العنوان</th>
+                                        <th scope="col">العمر</th>
+                                        <th scope="col">عيد الميلاد</th>
+                                        <th scope="col">الحالة الإجتماعية</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let s of element.adults">
+                                        <td>{{s.subscriber}}</td>
+                                        <td>{{s.subscriberTelephone}}</td>
+                                        <td>
+                                            <span *ngIf="s.subscriberAddress === 'cairo'">القاهرة</span>
+                                            <span *ngIf="s.subscriberAddress === 'bensouief'">بني سويف</span>
+                                            <span *ngIf="s.subscriberAddress === 'menya'">المنيا</span>
+                                            <span *ngIf="s.subscriberAddress === 'others'">أخري</span>
+
+                                        </td>
+                                        <td>{{s.subscriberAge}}</td>
+                                        <td>{{s.subscribeBirthdate | date: 'dd/MM/y'}}</td>
+                                        <td>
+                                            <span *ngIf="s.subscriberSocialStatus === 'married'">متزوج</span>
+                                            <span *ngIf="s.subscriberSocialStatus === 'single'">أعزب</span>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngIf="element.childNumber > 0">
+                    <ion-col>
+                        <div class="table-responsive">
+                            <p class="text-blue text-center font-size-20"> عدد الأطفال: {{element.childNumber}}</p>
+                            <table class="table text-right">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">الاسم</th>
+                                        <th scope="col">سرير منفصل</th>
+                                        <th scope="col">وجبة للطفل</th>
+
+                                        <th scope="col">المواصلات</th>
+                                        <th scope="col">العمر</th>
+                                        <th scope="col">تاريخ الميلاد</th>
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ch of element.children">
+                                        <td>{{ch.child}}</td>
+                                        <td>
+                                            <span *ngIf="ch.childBed === true">نعم</span>
+                                            <span *ngIf="ch.childBed === false">لا</span>
+                                        </td>
+
+                                        <td>
+                                            <span *ngIf="ch.childFood === true">نعم</span>
+                                            <span *ngIf="ch.childFood === false">لا</span>
+                                        </td>
+
+                                        <td>
+
+                                            <span *ngIf="ch.childTransportation === 'shoubra'">شبرا</span>
+                                            <span *ngIf="ch.childTransportation === 'meriland'">ميرلاند</span>
+                                            <span *ngIf="ch.childTransportation === 'private'">خاص</span>
+
+                                        </td>
+                                        <td>{{ch.childAge}}</td>
+                                        <td>{{ch.childBirthdate | date: 'dd/MM/y'}}</td>
+
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+        </div>
+    </ng-template>
+</ion-content>

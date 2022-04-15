@@ -1,0 +1,128 @@
+<ion-header>
+    <ion-toolbar color="primary" class="text-right">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <ion-button (click)="exportdata()">أكسيل</ion-button>
+        </ion-buttons>
+        <ion-title class="font-size-18">باص ميرلاند</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="allContainer">
+    <mat-form-field class="col-12 py-2">
+        <input matInput (keyup)="applyFilter($event)" placeholder="بحث">
+    </mat-form-field>
+    <!-- <div class="containerTable mat-elevation-z8">
+        <mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="position">
+                <mat-header-cell *matHeaderCellDef> الترتيب </mat-header-cell>
+                <mat-cell *matCellDef="let element; let i=index"> {{i + 1 }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="subscribier">
+                <mat-header-cell *matHeaderCellDef> المشترك</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span [ngClass]="element.mainSubscriber ? 'text-danger font-weight-bold': '' ">{{element.subscriber}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="mainSubscribier">
+                <mat-header-cell *matHeaderCellDef> المشترك الرئيسي</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span [ngClass]="element.mainSubscriber ? 'text-danger font-weight-bold': '' ">{{element.subscriber}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef> الموبايل</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.mobile}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="roomId">
+                <mat-header-cell *matHeaderCellDef> الغرفة</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.roomId}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remain">
+                <mat-header-cell *matHeaderCellDef> الباقي </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.remain}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="paid">
+                <mat-header-cell *matHeaderCellDef> المدفوع </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.paid}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="total">
+                <mat-header-cell *matHeaderCellDef> الإجمالي </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.total}}
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    </div> -->
+    <div class="containerTable mat-elevation-z8">
+        <mat-table [dataSource]="dataSource">
+
+
+            <ng-container matColumnDef="subscribier">
+                <mat-header-cell *matHeaderCellDef> المشترك</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.subscriber}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="mainSubscribier">
+                <mat-header-cell *matHeaderCellDef> المشترك الرئيسي</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.mainSubscriberName}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef> الموبايل</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.subscriberTelephone}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="roomId">
+                <mat-header-cell *matHeaderCellDef> الغرفة</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.roomId}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remain">
+                <mat-header-cell *matHeaderCellDef> الباقي </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.remainigCoast}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="paid">
+                <mat-header-cell *matHeaderCellDef> المدفوع </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.paidCoast}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="total">
+                <mat-header-cell *matHeaderCellDef> الإجمالي </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.totalCoast}}
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, this.dataSource.data.length]" showFirstLastButtons></mat-paginator>
+    </div>
+
+</ion-content>

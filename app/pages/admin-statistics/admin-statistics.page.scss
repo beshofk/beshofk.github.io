@@ -1,0 +1,25 @@
+.containerNumbers {
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
+    background-color: #FFF;
+    border-radius: 10px;
+}
+
+ion-col:not(:nth-last-child(-n+2)) {
+    border-bottom: 1px solid #DDD !important;
+}
+
+ion-col {
+    padding: 14px;
+}
+
+ion-col.adult {
+    background-color: #f9f8f7;
+}
+
+ion-col.children {
+    background-color: #efeeed;
+}
+
+ion-col.youth {
+    background-color: #e4e2e0;
+}

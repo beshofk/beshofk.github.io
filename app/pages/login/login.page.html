@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-toolbar color="primary" class="text-right">
+        <ion-title class="font-size-18">تسجيل الدخول</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid class="ion-no-padding">
+        <ion-row class="justify-content-center align-items-center">
+            <ion-col class="text-center p-0 m-5 containerNumbers" size-md="6" size="12">
+                <ion-row>
+                    <ion-col size="12">
+                        <form (ngSubmit)="login()" [formGroup]="loginForm">
+                            <ion-item lines="none" class="py-2">
+                                <ion-label position="stacked">البريد الإلكتروني</ion-label>
+                                <ion-input class="mt-2" type="email" placeholder="البريد الإلكتروني" name="email" formControlName="email"></ion-input>
+                            </ion-item>
+                            <ion-item lines="none" class="pb-2">
+                                <ion-label position="stacked">كلمة المرور</ion-label>
+                                <ion-input class="mt-2" type="password" placeholder="كلمة المرور" name="password" formControlName="password"></ion-input>
+                            </ion-item>
+                            <ion-button class="ion-padding-horizontal" color="primary" expand="full" type="submit" [disabled]="!loginForm.valid">تسجيل الدخول</ion-button>
+                        </form>
+                    </ion-col>
+
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

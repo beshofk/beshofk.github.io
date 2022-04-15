@@ -1,0 +1,20 @@
+// button.export {
+//     background-color: transparent;
+//     font-size: 30px;
+//     margin: 27px;
+//     color: #2199e8;
+// }
+// button.export:focus {
+//     outline: 0;
+//     box-shadow: none;
+// }
+button:not(.addButton):hover {
+    text-shadow: 0 5px 15px #1e060a;
+    color: #fff !important;
+    border-radius: 50% !important;
+    background-color: #000;
+}
+
+.containerTable {
+    max-height: 440px;
+}

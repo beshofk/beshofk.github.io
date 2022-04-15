@@ -1,0 +1,86 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="text-right">
+            <span *ngIf="id"> تعديل الغرفة</span>
+            <span *ngIf="!id">إضافة غرفة جديدة</span>
+            <!-- : #{{id}} -->
+            <button class="closeModalButton" (click)="close()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+
+        <form (ngSubmit)="saveOrUpdate()" [formGroup]="roomForm">
+            <ion-row>
+                <ion-col class="col-12 text-right">
+                    <ion-label position="stacked">اسم الحجرة
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-input required type="text" formControlName="roomName" class="customBorder"></ion-input>
+                </ion-col>
+                <ion-col class="col-12 text-right">
+                    <ion-label position="stacked">اسم المبني
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-input required type="text" class="customBorder" formControlName="building"></ion-input>
+                </ion-col>
+                <ion-col class="col-12 text-right">
+                    <ion-label>نوع الغرفة</ion-label>
+                    <mat-select formControlName="roomType">
+                        <mat-option *ngFor="let r of roomTypes" [value]="r.value">
+                            {{r.value}}
+                        </mat-option>
+                    </mat-select>
+                    <ion-select interface="alert" class="customBorder" formControlName="roomType" placeholder="اختر">
+                        <ion-select-option value="1" selected>1</ion-select-option>
+                        <ion-select-option value="2">2</ion-select-option>
+                        <ion-select-option value="3">3</ion-select-option>
+                        <ion-select-option value="4">4</ion-select-option>
+                        <ion-select-option value="5">5</ion-select-option>
+                        <ion-select-option value="6">6</ion-select-option>
+                        <ion-select-option value="7">7</ion-select-option>
+                        <ion-select-option value="8">8</ion-select-option>
+                        <ion-select-option value="9">9</ion-select-option>
+                        <ion-select-option value="10">10</ion-select-option>
+
+                    </ion-select>
+                </ion-col>
+                <ion-col class="col-12 text-right">
+                    <ion-label>الدور</ion-label>
+                    <ion-select interface="alert" class="customBorder" formControlName="roomFloor" placeholder="اختر">
+                        <ion-select-option value="0" selected>0</ion-select-option>
+                        <ion-select-option value="1">1</ion-select-option>
+                        <ion-select-option value="2">2</ion-select-option>
+                        <ion-select-option value="3">3</ion-select-option>
+                        <ion-select-option value="4">4</ion-select-option>
+                        <ion-select-option value="5">5</ion-select-option>
+                        <ion-select-option value="6">6</ion-select-option>
+                        <ion-select-option value="7">7</ion-select-option>
+                        <ion-select-option value="8">8</ion-select-option>
+                        <ion-select-option value="9">9</ion-select-option>
+                        <ion-select-option value="10">10</ion-select-option>
+                    </ion-select>
+                </ion-col>
+                <ion-col class="col-6 text-right">
+                    <ion-button class="ion-padding-horizontal ion-margin-vertical" color="medium" expand="block" [disabled]="!roomForm.valid" type="submit">
+                        <ion-icon *ngIf="!id" name="checkmark" slot="end"></ion-icon>
+                        <ion-icon *ngIf="id" name="create" slot="end"></ion-icon>
+                        <span *ngIf="!id">إضافة غرفة جديدة</span>
+                        <span *ngIf="id">تعديل الغرفة</span>
+                    </ion-button>
+                </ion-col>
+                <ion-col class="col-6 text-right">
+
+                    <ion-button *ngIf="id" class="ion-padding-horizontal ion-margin-vertical" color="danger" expand="block" (click)="deleteRoom()">
+                        <ion-icon name="trash" slot="end"></ion-icon>
+                        مسح الحجز
+                    </ion-button>
+                </ion-col>
+
+            </ion-row>
+        </form>
+    </ion-grid>
+</ion-content>

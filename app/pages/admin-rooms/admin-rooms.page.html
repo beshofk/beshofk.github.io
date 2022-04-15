@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-toolbar color="primary" class="text-right">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <ion-button type="button" (click)="exportCSV()">
+                أكسيل
+            </ion-button>
+
+            <ion-button type="button" (click)="addBulkRooms()">
+                Add Bulk Rooms
+            </ion-button>
+
+
+        </ion-buttons>
+        <ion-title class="font-size-18">الغرف</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="allContainer">
+    <div class="text-right py-2">
+        <ion-button color="primary" *ngIf="role === 'ADMIN'" (click)="openRoomModal()" class="addButton  col-1">
+            <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <mat-form-field [ngClass]="role === 'VIEWER' ? 'px-2 col-6' : 'px-2 col-6'">
+            <input matInput class="form-field" [formControl]="remainFilter" placeholder="بحث بالمتبقي">
+        </mat-form-field>
+    </div>
+    <div class="containerTable mat-elevation-z8 mat-elevation-z8 ">
+
+        <mat-table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="building">
+                <mat-header-cell *matHeaderCellDef>المبني</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.building}}
+                </mat-cell>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="roomFloor">
+                <mat-header-cell *matHeaderCellDef> رقم دور الغرفة</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.roomFloor}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="roomName">
+                <mat-header-cell *matHeaderCellDef>اسم الغرفة</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.roomName}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="roomType">
+                <mat-header-cell *matHeaderCellDef>نوع الغرفة</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.roomType}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="remaining">
+                <mat-header-cell *matHeaderCellDef> الباقي</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.remaining}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button type="button" (click)="openRoomModal(element.id)">
+                                    <mat-icon matSuffix matTooltip="تعديل" matTooltipPosition="right">edit
+                                    </mat-icon>
+                                </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row">
+            </mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, dataSource.data.length]"></mat-paginator>
+    </div>
+</ion-content>

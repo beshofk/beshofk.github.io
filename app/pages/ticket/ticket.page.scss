@@ -1,0 +1,140 @@
+ion-content {
+    direction: rtl;
+}
+
+::ng-deep {
+    .alert-wrapper {
+        width: 25% !important;
+        max-width: 100% !important;
+    }
+}
+
+form {
+    border-radius: 5px;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #eee;
+    //  width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    .customLabel {
+        display: flex;
+        align-items: center;
+        //   justify-content: flex-end;
+    }
+}
+
+.mainTitle {
+    padding: 15px 0;
+    font-size: 18px;
+}
+
+.hydrated:not(.mainTitle) {
+    text-align: right !important;
+}
+
+.customRow {
+    display: flex;
+    align-items: center;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+    // border: 1px solid yellow;
+}
+
+.ion-label-font-size {
+    font-size: 11px;
+}
+
+.required:after {
+    content: "*";
+    color: red;
+}
+
+.instructions {
+    box-shadow: 0 2px 7px 0 #a2cfff;
+    border: 1px solid #eee;
+    ol {
+        text-align: justify;
+    }
+}
+
+.successful-msg {
+    margin: 0 auto;
+    box-shadow: 0 2px 7px 0 #a2cfff;
+    border: 1px solid #eee;
+    margin-top: 50px;
+    max-width: 600px;
+    padding: 50px 0;
+    text-align: center;
+    p {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .instructions {
+        height: auto;
+        p {
+            line-height: 35px;
+        }
+    }
+    .ion-label-font-size {
+        font-size: 16px;
+    }
+    .mainTitle {
+        font-size: 15px !important;
+    }
+}
+
+.validation-color {
+    color: red;
+}
+
+.validation-msg {
+    border: 1px solid red;
+    padding: 5px 0px;
+    border-radius: 5px;
+    li {
+        color: red;
+    }
+    display: none;
+}
+
+div.datetime-text {
+    padding: 0 !important;
+}
+
+.closeModalButton {
+    background-color: #3880ff;
+    float: left;
+}
+
+// .materialInput {
+//     direction: ltr;
+// }
+// ::ng-ddep.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+//     width: 124.33333% !important;
+// }
+// label.mat-form-field-label {
+//     width: 120.33333% !important;
+// }
+// span.mat-form-field-label-wrapper {
+//     label.mat-label {
+//         padding-right: 21px !important;
+//     }
+// }
+// .mat-form-field-appearance-outline {
+//     .mat-form-field-outline-start {
+//         border-radius: 0 5px 5px 0 !important;
+//     }
+// }
+// label#mat-form-field-label {
+//     width: 127.33333%;
+// }
+// ::ng-deep.mat-form-field-type-mat-select .mat-form-field-label {
+//     width: 100% !important;
+// }

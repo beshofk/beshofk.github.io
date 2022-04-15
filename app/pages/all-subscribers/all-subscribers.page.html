@@ -1,0 +1,118 @@
+<ion-header>
+    <ion-toolbar color="primary" class="text-right">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <ion-title class="font-size-18">كل المشتركين</ion-title>
+            <mat-form-field>
+                <mat-label class="text-light">أكسيل</mat-label>
+                <mat-select class="border-light">
+                    <mat-option (click)="exportNamesOnlyData()">
+                        اسماء فقط
+                    </mat-option>
+                    <mat-option (click)="exportAllData()">
+                        كل البيانات
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-tab-bar>
+        <span class="infoTitleNumberDuplicated font-weight-bold col-auto">رقم مكرر</span>
+        <span class="infoTitleDuplicated font-weight-bold col-auto">حجز مكرر</span>
+        <span class="infoTitleNew font-weight-bold col-auto"> حجز جديد</span>
+        <span class="infoTitleConfirm font-weight-bold col-auto">حجز مؤكد</span>
+        <span class="infoTitleDeleted font-weight-bold col-auto">حجز ملغي</span>
+    </ion-tab-bar>
+</ion-header>
+
+<ion-content class="allContainer">
+    <div class="my-1 text-right">
+        <mat-form-field class="col-md-2 col-4">
+            <input matInput class="form-field" [formControl]="nameFilter" placeholder="الاسم">
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <input matInput class="form-field" [formControl]="mobileFilter" placeholder="الموبايل">
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>النوع</mat-label>
+            <mat-select [formControl]="genderFilter">
+                <mat-option *ngFor="let g of gender" [value]="g.value">
+                    {{g.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>السن</mat-label>
+            <mat-select [formControl]="ageFilter">
+                <mat-option *ngFor="let age of ageRange" [value]="age.value">
+                    {{age.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>عيد الميلاد</mat-label>
+            <mat-select [formControl]="birthdateFilter">
+                <mat-option *ngFor="let b of months" [value]="b.value">
+                    {{b.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>نو ع الحجز</mat-label>
+            <mat-select [formControl]="statusFilter">
+                <mat-option *ngFor="let s of status" [value]="s.value">
+                    {{s.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-2 col-4">
+            <mat-label>مكرر</mat-label>
+            <mat-select [formControl]="duplicatedFilter">
+                <mat-option *ngFor="let d of duplicated" [value]="d.value">
+                    {{d.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <ion-button class="resetButton col-md-2 col-4 m-0" color="primary" type="button" (click)="resetFilters()">
+            إلغاء الفلتر
+        </ion-button>
+        <ion-button class="resetButton col-md-2 col-4 m-0" color="light" type="button" (click)="resetSort()">
+            إلغاء الترتيب
+        </ion-button>
+    </div>
+
+    <div class="containerTable mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort>
+            <!-- (matSortChange)="sortData($event)" -->
+            <ng-container matColumnDef="subscriber">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> المشترك </mat-header-cell>
+                <mat-cell *matCellDef="let element; let i =index">
+                    <p [ngClass]="element.duplicated ? 'mobile-duplicated': ''">{{element.subscriber}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef> الموبايل </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span [ngClass]="element.duplicated ? 'mobile-duplicated': ''">{{element.subscriberTelephone}} </span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="birthdate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> تاريخ الميلاد </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    {{element.birthdate | date: 'dd/MM/y'}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="age">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> السن </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.subscriberAge}}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'new': row.status=='new','confirmed': row.status=='confirmed','duplicated': row.status=='duplicated','deleted': row.status=='deleted' }">
+            </mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, dataSource.data.length]"></mat-paginator>
+    </div>
+</ion-content>

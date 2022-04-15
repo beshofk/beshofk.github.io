@@ -1,0 +1,491 @@
+<ion-header>
+    <ion-toolbar color="primary" mode="ios">
+        <ion-title size="small" class="mainTitle" *ngIf="!id">
+            مؤتمر السامري الصالح من الجمعة 1 اكتوبر الى الاحد ٦ اكتوبر 2022 بيت القديس سمعان الخراز – وادي النطرون
+        </ion-title>
+        <ion-title class="mainTitle" *ngIf="id">
+            <!-- #{{id}} -->
+            تعديل حجز</ion-title>
+        <button *ngIf="id" class="closeModalButton" (click)="close()">
+				<ion-icon name="close"></ion-icon>
+			</button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <ion-grid class="pt-3" *ngIf="!isUserCreated">
+        <div *ngIf="!isUserAcceptconditions">
+            <div class="container instructions">
+                <div class="row">
+                    <div class="col-12 px-0">
+                        <img src="../../../assets/images/jesusu.jpg" width="100%" height="185" />
+                    </div>
+                    <div class="col-md-4 col-12 pt-1">
+                        <h3 class="text-center mb-0">تنبيهات عامة</h3>
+                        <ol>
+                            <li>المؤتمر وقت للصلاة والعبادة ...ضع ذلك فى قلبك </li>
+                            <li>ادعو احبائك للمجئ معك وصلي من أجلهم</li>
+                            <li>صلي أيضا من أجل المؤتمر...الخدام وكل ترتيب...من أجل حضور وعمل للرب</li>
+                            <li>
+                                التزم الهدوء أثناء المؤتمر بقدر المستطاع ...ذلك يفيدك فى سماع صوت الرب
+                            </li>
+                            <li>
+                                التزم بالحضور مبكرا فى الخدمات لتتبارك وتبارك
+                            </li>
+                            <li>
+                                رجاء اخير الالتزام بكل المواعيد خاصة موعد حمام السباحة فى الاوقات المحددة فقط. نزول الاطفال يقع تحت مسئولية آبائهم.
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-4 col-12 pt-1">
+                        <h3 class="text-center mb-0">قيمة الاشتراك</h3>
+                        <ol>
+                            <li>
+                                للفرد (من سن 12 سنة)= 375 جنية.
+
+                            </li>
+                            <li>
+                                للاطفال (من 4 الى 11 سنة) = 200 جنية (الوجبات والانشطة بدون سرير).
+
+                            </li>
+                            <li>
+                                اقامة كاملة للاطفال = 375 جنية (سرير منفرد).
+
+                            </li>
+                            <li>
+                                تكلفة الباص للفرد = 100 جنية
+
+                            </li>
+                            <li>
+                                الاستمارة الاكترونية لجمع البيانات فقط ... و سيقوم مسئول الحجز بالاتصال بك لمراجعة البيانات من 6 الى 9 مساءا.
+
+                            </li>
+
+                        </ol>
+                    </div>
+                    <div class="col-md-4 col-12 pt-1">
+                        <h3 class="text-center mb-0">مواعيد هامة</h3>
+                        <ol>
+                            <li>
+                                لا يعتبر الحجز مؤكدا ما لم تقوم بدفع حد ادنى 50% من قيمة الاشتراك خلال اسبوع من تاريخ ملىء الاستمارة الالكترونية. فى حالة عدم السداد سيعتبر الحجز لاغي.
+
+
+                            </li>
+                            <li>
+                                آخر موعد للحجز  يوم 27 سبتمبر. سيتم اغلاق الموقع بعد هذا التاريخ.
+
+                            </li>
+                            <li>
+                                فى حالة الاعتذار بعد 27 سبتمبر لا يتم استرداد اي مبلغ.
+
+                            </li>
+
+                        </ol>
+                    </div>
+                    <div class="col-12 text-center px-0 pb-2">
+                        <ion-button (click)="acceptTerms()" class="acceptButton mt-3" color="primary">موافق علي الشروط و ملتزم بجميع التنبيهات</ion-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form class="col-md-6 col-12" *ngIf="isUserAcceptconditions" (ngSubmit)="acceptPrice()" [formGroup]="ticketForm" novalidate>
+
+            <ion-radio-group formControlName="reservationType" (ionChange)="changeReservationType()">
+                <ion-row>
+                    <ion-col class="customLabel px-3 col-lg-4 col-12">
+                        <ion-label class="font-weight-bold">نوع الحجز</ion-label>
+                    </ion-col>
+                    <ion-col class="col-6 col-lg-4 p-0">
+                        <ion-item lines="none">
+                            <ion-label class="font-weight-bold">فرد</ion-label>
+                            <ion-radio [disabled]="selectDisable" mode="md" slot="start" value="single"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+
+                    <ion-col class="col-6 col-lg-4 p-0">
+                        <ion-item lines="none">
+                            <ion-label class="font-weight-bold">مجموعة</ion-label>
+                            <ion-radio [disabled]="selectDisable" mode="md" slot="start" value="group"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-radio-group>
+
+            <div *ngIf="isvalidationTypeVisible">
+
+                <div *ngIf="!readPrice">
+                    <ion-row *ngIf="ticketForm.controls.reservationType.value!='single'">
+                        <mat-form-field class="col-md-6 col-12 materialInput">
+                            <mat-label>عدد الأفراد الذين فوق 12 سنة</mat-label>
+                            <mat-select [disabled]="selectDisable" formControlName="adultNumber" (selectionChange)="changeAdultNumber($event.value)">
+                                <mat-option *ngFor="let val of values" [value]="val.value">
+                                    {{val.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-md-6 col-12 materialInput">
+                            <mat-label>عدد الأطفال من سن 4 سنوات الى سن أقل من 12 سنة</mat-label>
+                            <mat-select [disabled]="selectDisable" formControlName="childNumber" (selectionChange)="changeChildNumber($event.value)">
+                                <mat-option *ngFor="let val of values" [value]="val.value">
+                                    {{val.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <ion-col *ngIf="formSubmitted && (ticketForm.controls['childNumber'].value < 2 || ticketForm.controls['adultNumber'].value === 0)" class="text-danger col-12">
+                            يجب إختيار باقي البيانات
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row *ngIf="id">
+                        <ion-col class="px-3">
+                            <ion-label class="font-weight-bold">الغرفة <small>{{totalBedsNeeded}}</small> </ion-label>
+                            <ion-select cancelText="إلغاء" okText="موافق" class="customBorder" formControlName="roomId" id="room">
+                                <ion-select-option *ngFor="let room of avilableRooms" value="{{room.id}}">Building: {{room.data.building}} - Number: {{room.data.roomName}} - Type: {{room.data.roomType}} - Remaining {{room.data.remaining}}</ion-select-option>
+                            </ion-select>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row *ngIf="isAdultTitleVisible">
+                        <ion-col class="px-3">
+                            <h3 class="font-weight-bold">بيانات البالغين</h3>
+                        </ion-col>
+                    </ion-row>
+
+                    <div formArrayName="adults" *ngFor="let adult of ticketForm.get('adults')['controls']; let i=index">
+                        <div [formGroupName]="i">
+
+                            <ion-row>
+                                <ion-col class="px-3">
+                                    <ion-label class="font-weight-bold" position="stacked">المشترك {{i+1}} </ion-label>
+                                </ion-col>
+                            </ion-row>
+
+                            <div class="row">
+                                <mat-form-field class="col-md-6 px-3 materialInput">
+                                    <input required matInput placeholder="الاسم ثلاثي كامل باللغة العربية" formControlName="subscriber" name="subscriber">
+                                    <mat-error>
+                                        <span id="subscriber{{i}}" class="validation-color"></span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-6 px-3 materialInput">
+                                    <input required matInput type="tel" maxlength="11" placeholder="رقم الموبايل باللغة الإنجليزية" formControlName="subscriberTelephone" name="subscriberTelephone">
+                                    <mat-error>
+                                        <span id="subscriberTelephone{{i}}" class="validation-color"></span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-6 col-12 materialInput">
+                                    <mat-label>المواصلات للمؤتمر</mat-label>
+                                    <mat-select required formControlName="subscriberTransportation">
+                                        <mat-option *ngFor="let t of buses" [value]="t.value">
+                                            {{t.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        <div id="subscriberTransportation{{i}}" class="col-12 validation-color"></div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-6 col-12 materialInput">
+                                    <mat-label>العنوان</mat-label>
+                                    <mat-select required formControlName="subscriberAddress">
+                                        <mat-option *ngFor="let t of transports" [value]="t.value">
+                                            {{t.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        <div id="subscriberAddress{{i}}" class="col-12 validation-color"></div>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field class="col-md-6 col-12 materialInput">
+                                    <mat-label>تاريخ الميلاد</mat-label>
+                                    <input required matInput [min]="minDateAdult" [max]="maxDateAdult" formControlName="subscriberAge" [matDatepicker]="picker">
+                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error>
+                                        <div id="subscriberAge{{i}}" class="col-12 validation-color"></div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+
+
+                            <ion-radio-group formControlName="subscriberGender">
+                                <ion-row>
+                                    <ion-col class="px-3 customLabel">
+                                        <ion-label class="font-weight-bold required">النوع</ion-label>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">ذكر</ion-label>
+                                            <ion-radio  mode="md" slot="start" value="male"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">أنثى</ion-label>
+                                            <ion-radio mode="md" slot="start" value="female"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-radio-group>
+                            <span id="subscriberGender{{i}}" class="validation-color"></span>
+                            <ion-radio-group formControlName="subscriberSocialStatus">
+                                <ion-row class="customRow">
+                                    <ion-col class="px-3 col-12 col-md-4">
+                                        <ion-label class="font-weight-bold required">الحالة الأجتماعية</ion-label>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">أعزب</ion-label>
+                                            <ion-radio  mode="md" slot="start" value="single"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">متزوج</ion-label>
+                                            <ion-radio  mode="md" slot="start" value="married"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-radio-group>
+                            <span id="subscriberSocialStatus{{i}}" class="validation-color"></span>
+                            <ion-item-divider>
+                            </ion-item-divider>
+                        </div>
+                    </div>
+
+                    <ion-row *ngIf="isChildTitleVisible">
+                        <ion-col class="px-3">
+                            <h3 class="font-weight-bold">بيانات الأطفال</h3>
+                        </ion-col>
+                    </ion-row>
+
+                    <div formArrayName="childrens" *ngFor="let children of ticketForm.get('childrens')['controls']; let i=index">
+                        <div [formGroupName]="i">
+
+                            <ion-row>
+                                <ion-col class="px-3">
+                                    <ion-label class="font-weight-bold" position="stacked">الطفل {{i+1}}</ion-label>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row class="customRow">
+                                <mat-form-field class="col-md-6 px-3 materialInput">
+                                    <mat-label>الاسم الثلاثي بالكامل</mat-label>
+                                    <input required matInput placeholder="الاسم باللغة العربية" formControlName="child" name="child">
+                                    <mat-error>
+                                        <span id="child{{i}}" class="validation-color"></span>
+                                    </mat-error>
+                                </mat-form-field>
+
+
+
+
+                                <mat-form-field class="col-md-6 col-12 materialInput">
+                                    <mat-label>تاريخ الميلاد</mat-label>
+                                    <input matInput required [min]="minDateChildren" [max]="maxDateChildren" formControlName="childAge" [matDatepicker]="picker">
+                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error>
+                                        <div id="childAge{{i}}" class="col-12 validation-color"></div>
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </ion-row>
+
+                            <ion-row>
+
+                                <mat-form-field class="col-md-6 col-12 materialInput">
+                                    <mat-label>المواصلات للمؤتمر</mat-label>
+                                    <mat-select required formControlName="childTransportation">
+                                        <mat-option *ngFor="let t of childBuses" [value]="t.value">
+                                            {{t.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>
+                                        <div id="childTransportation{{i}}" class="col-12 validation-color"></div>
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </ion-row>
+
+                            <ion-radio-group formControlName="childGender">
+                                <ion-row>
+                                    <ion-col class="px-3 customLabel">
+                                        <ion-label class="font-weight-bold required">النوع</ion-label>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">ذكر</ion-label>
+                                            <ion-radio [disabled]="selectDisable" mode="md" slot="start" value="male"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">أنثى</ion-label>
+                                            <ion-radio [disabled]="selectDisable" mode="md" slot="start" value="female"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                    <div id="childGender{{i}}" class="col-12 validation-color"></div>
+                                </ion-row>
+                            </ion-radio-group>
+
+
+                            <ion-radio-group formControlName="childBed" (ionChange)="changeBedSelection($event);">
+                                <ion-row>
+                                    <ion-col class="px-3 customLabel">
+                                        <ion-label class="font-weight-bold required">هل تريد سرير منفرد للطفل</ion-label>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">نعم</ion-label>
+                                            <ion-radio mode="md" slot="start" [value]="true"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">لا</ion-label>
+                                            <ion-radio mode="md" slot="start" [value]="false"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                    <div id="childBed{{i}}" class="col-12 validation-color"></div>
+                                </ion-row>
+                            </ion-radio-group>
+
+                            <ion-radio-group formControlName="childFood">
+                                <ion-row>
+                                    <ion-col class="px-3 customLabel">
+                                        <ion-label class="font-weight-bold required">هل تريد وجبة للطفل</ion-label>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">نعم</ion-label>
+                                            <ion-radio mode="md" slot="start" [value]="true"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+
+                                    <ion-col>
+                                        <ion-item lines="none">
+                                            <ion-label class="font-weight-bold">لا</ion-label>
+                                            <ion-radio mode="md" slot="start" [value]="false"></ion-radio>
+                                        </ion-item>
+                                    </ion-col>
+                                    <div id="childFood{{i}}" class="col-12 validation-color"></div>
+                                </ion-row>
+                            </ion-radio-group>
+
+                        </div>
+                    </div>
+
+                    <div *ngIf="validationErrorExists();" class="validation-msg">
+                        <ul>
+                            <li *ngFor="let val of invalid" class="mb-1">
+                                {{val}}<br/>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ion-row *ngIf="id">
+                        <ion-col class="px-3 col-12">
+                            <!-- <ion-item lines="none"> -->
+                            <ion-label class="font-weight-bold">ملاحظات</ion-label>
+                            <ion-input class="customBorder mt-2" type="text" formControlName="subscriptionNotes"></ion-input>
+                            <!-- </ion-item> -->
+                        </ion-col>
+                        <ion-col class="px-3 col-4">
+                            <ion-label class="font-weight-bold">الإجمالي</ion-label>
+                            <ion-input type="text" class="mt-2" formControlName="totalCoast"></ion-input>
+                        </ion-col>
+                        <ion-col class="col-4">
+
+                            <ion-label class="font-weight-bold">المدفوع</ion-label>
+                            <ion-input type="number" maxlength="4" min="0" class="customBorder mt-2" (ngModelChange)="calculateRemaining()" formControlName="paidCoast"></ion-input>
+                        </ion-col>
+                        <ion-col class="col-4">
+                            <ion-label class="font-weight-bold">المتبقى</ion-label>
+                            <div class="mt-2">{{remaining}}</div>
+                            <ion-input type="text" formControlName="remainigCoast" hidden></ion-input>
+                        </ion-col>
+                        <!-- <ion-col class="col-12"> -->
+                        <!-- <ion-item lines="none" class="ion-padding-vertical" *ngIf="id"> -->
+                        <mat-form-field class="col-12 materialInput">
+                            <mat-label>اختر حالة الحجز</mat-label>
+                            <mat-select required formControlName="status">
+                                <mat-option *ngFor="let t of status" [value]="t.value">
+                                    {{t.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <div id="subscriberAddress{{i}}" class="col-12 validation-color"></div>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </ion-row>
+                </div>
+
+                <ion-row *ngIf="!readPrice">
+                    <ion-col class="col-12 p-0">
+                        <ion-button class="ion-padding-horizontal ion-margin-vertical" color="success" expand="block" type="submit">
+                            <span class="mb-0">إضافة حجز</span>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row *ngIf="readPrice">
+                    <ion-col class="col-12 p-0">
+                        <ul>
+                            <li *ngFor="let item of priceListStringVm; let i = index">
+                                {{item}}
+                            </li>
+                        </ul>
+                    </ion-col>
+                    <ion-col class="col-6 p-0" *ngIf="!id && readPrice">
+                        <ion-button class="ion-padding-horizontal ion-margin-vertical" color="success" expand="block" (click)="backToForm()">
+                            <!-- <ion-icon name="checkmark" slot="end"></ion-icon> -->
+
+                            <span class="mb-0">عودة</span>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col class="col-6 p-0">
+                        <ion-button class="ion-padding-horizontal ion-margin-vertical" color="success" expand="block" (click)="saveOrUpdate()">
+                            <ion-icon *ngIf="!id" name="checkmark" slot="end"></ion-icon>
+                            <ion-icon *ngIf="id" name="create" slot="end"></ion-icon>
+                            <span class="mb-0" *ngIf="!id">موافق</span>
+                            <span class="mb-0" *ngIf="id">تعديل الحجز</span>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col class="col-6 p-0">
+                        <ion-button *ngIf="id" class="ion-padding-horizontal ion-margin-vertical" color="danger" expand="block" (click)="deleteTicket()">
+                            <ion-icon name="trash" slot="end"></ion-icon>
+                            حذف الحجز
+                        </ion-button>
+                    </ion-col>
+
+                </ion-row>
+
+            </div>
+        </form>
+    </ion-grid>
+
+    <div class="successful-msg text-center" *ngIf="isUserCreated">
+        <fa-icon [icon]="faCheckCircleString" style="
+            color: #3880ff;
+            font-size: 50px;
+            margin-bottom: 15px;
+        "></fa-icon>
+        <p class="mt-3">
+            تمت عملية الحجز بنجاح. سوف يقوم أحد الخدام بالأتصال بك هاتفيا فى خلال ثلاثة أيام لتأكيد حجزك
+        </p>
+    </div>
+
+
+</ion-content>
